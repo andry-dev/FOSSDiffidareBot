@@ -28,12 +28,21 @@ Telegram::Bot::Client.run(token) do |bot|
         [9, 'Bullizzare',           ' ']
       ].map do |arr|
 
-        msgres = arr[1] + arr[2] + message.query
+        if message.query.empty?
+          message.query = "pac"
+        end
+
+        msgres = "*" + arr[1] + arr[2] + message.query + "*"
+
+        message_content = Telegram::Bot::Types::InputTextMessageContent.new(
+          message_text: msgres,
+          parse_mode: "Markdown"
+        )
 
         Telegram::Bot::Types::InlineQueryResultArticle.new(
           id: arr[0],
           title: arr[1],
-          input_message_content: Telegram::Bot::Types::InputTextMessageContent.new(message_text: msgres),
+          input_message_content: message_content,
           description: arr[2] + message.query
         )
 

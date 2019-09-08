@@ -48,7 +48,11 @@ Telegram::Bot::Client.run(token) do |bot|
 
       end
 
-      bot.api.answer_inline_query(inline_query_id: message.id, results: results)
+      begin
+        bot.api.answer_inline_query(inline_query_id: message.id, results: results)
+      rescue Telegram::Bot::Exceptions::ResponseError => e
+        puts e.message
+      end
     end
 
   end

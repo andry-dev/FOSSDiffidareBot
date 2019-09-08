@@ -1,6 +1,6 @@
 # FOSSDiffidareBot
 
-A FOSS reimplementation of "@DiffidareBot" (an Italian Telegram bot) in Ruby.
+A FOSS reimplementation of "@DiffidareBot" (a joke Italian Telegram bot) in Ruby.
 
 This is my first Ruby application, please no bully.
 

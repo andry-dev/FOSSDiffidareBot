@@ -17,15 +17,16 @@ Telegram::Bot::Client.run(token) do |bot|
     case message
     when Telegram::Bot::Types::InlineQuery
       results = [
-        [1, 'Diffidare',            ' da '],
-        [2, 'Boicottare',           ' '],
-        [3, 'Dubitare',             ' di '],
-        [4, 'Sospettare',           ' di '],
-        [5, 'Discostarsi',          ' da '],
-        [6, 'Discriminare',         ' '],
-        [7, 'Deprecare',            ' '],
-        [8, 'Mettere in questione', ' '],
-        [9, 'Bullizzare',           ' ']
+        [1,  'Diffidare',            ' da '],
+        [2,  'Boicottare',           ' '],
+        [3,  'Dubitare',             ' di '],
+        [4,  'Sospettare',           ' di '],
+        [5,  'Discostarsi',          ' da '],
+        [6,  'Discriminare',         ' '],
+        [7,  'Deprecare',            ' '],
+        [8,  'Mettere in questione', ' '],
+        [9,  'Bullizzare',           ' '],
+        [10, 'Diffamare',            ' ']
       ].map do |arr|
 
         if message.query.empty?

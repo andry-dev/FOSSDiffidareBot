@@ -13,7 +13,7 @@ def read_token
   end
 end
 
-def generate_results(phrases)
+def generate_results(message, phrases)
   phrases.map do |arr|
     message.query = 'pac' if message.query.empty?
 
@@ -58,7 +58,7 @@ Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     case message
     when Telegram::Bot::Types::InlineQuery
-      results = generate_results(phrases)
+      results = generate_results(message, phrases)
 
       begin
         bot.api.answer_inline_query(inline_query_id: message.id, results: results)

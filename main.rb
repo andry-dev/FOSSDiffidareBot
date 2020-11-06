@@ -3,40 +3,44 @@ require 'bundler/setup'
 require 'telegram/bot'
 require 'yaml'
 
-config = YAML.load_file('config/config.yaml')
+def read_token
+  if File.exist?('config/config.yaml')
+    config = YAML.load_file('config/config.yaml')
+    config['token']
+  else
+    puts 'File config/config.yaml not found! Trying to read the token from BOT_TOKEN'
+    ENV['BOT_TOKEN']
+  end
+end
 
-raise "Can't find config/config.yaml, aborting" unless config
+token = read_token
 
-token = config["token"]
+raise "Can't find bot token in the config file or in BOT_TOKEN environmental variable, aborting" unless token
 
-raise "Can't find bot token in the config file, aborting" unless token
+results = [
+  [1, 'Diffidare',            ' da '],
+  [2, 'Boicottare',           ' '],
+  [3, 'Dubitare',             ' di '],
+  [4, 'Sospettare',           ' di '],
+  [5, 'Discostarsi',          ' da '],
+  [6, 'Discriminare',         ' '],
+  [7, 'Deprecare',            ' '],
+  [8, 'Mettere in questione', ' '],
+  [9, 'Bullizzare',           ' ']
+]
 
 Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
-
     case message
     when Telegram::Bot::Types::InlineQuery
-      results = [
-        [1, 'Diffidare',            ' da '],
-        [2, 'Boicottare',           ' '],
-        [3, 'Dubitare',             ' di '],
-        [4, 'Sospettare',           ' di '],
-        [5, 'Discostarsi',          ' da '],
-        [6, 'Discriminare',         ' '],
-        [7, 'Deprecare',            ' '],
-        [8, 'Mettere in questione', ' '],
-        [9, 'Bullizzare',           ' ']
-      ].map do |arr|
+      results.map do |arr|
+        message.query = 'pac' if message.query.empty?
 
-        if message.query.empty?
-          message.query = "pac"
-        end
-
-        msgres = "*" + arr[1] + arr[2] + message.query + "*"
+        msgres = '*' + arr[1] + arr[2] + message.query + '*'
 
         message_content = Telegram::Bot::Types::InputTextMessageContent.new(
           message_text: msgres,
-          parse_mode: "Markdown"
+          parse_mode: 'Markdown'
         )
 
         Telegram::Bot::Types::InlineQueryResultArticle.new(
@@ -45,7 +49,6 @@ Telegram::Bot::Client.run(token) do |bot|
           input_message_content: message_content,
           description: arr[2] + message.query
         )
-
       end
 
       begin
@@ -54,6 +57,5 @@ Telegram::Bot::Client.run(token) do |bot|
         puts e.message
       end
     end
-
   end
 end
